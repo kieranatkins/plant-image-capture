@@ -1,5 +1,6 @@
 import sys
 import os
+import numpy
 from PyQt5 import QtGui
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -100,23 +101,23 @@ class PICWindow(QWidget):
         self.image_id_input.setPlaceholderText('e.g. 1 or M')
         data_input_layout.addWidget(self.image_id_input, 1, 3)
 
-        capture_btn_layout = QHBoxLayout()
+        self.capture_btn_layout = QHBoxLayout()
 
         self.preview_btn = QPushButton('Preview')
         self.preview_btn.clicked.connect(self.preview_on_click)
-        capture_btn_layout.addWidget(self.preview_btn, 1)
+        self.capture_btn_layout.addWidget(self.preview_btn, 1)
         self.preview_btn.setMaximumHeight(50)
 
         self.capture_btn = QPushButton('Capture')
         self.capture_btn.clicked.connect(self.capture_on_click)
         self.capture_btn.setStyleSheet('background-color:red')
-        capture_btn_layout.addWidget(self.capture_btn, 5)
+        self.capture_btn_layout.addWidget(self.capture_btn, 5)
         self.capture_btn.setMaximumHeight(50)
         self.capture_btn.setMaximumWidth(600)
 
         self.skip_btn = QPushButton('Skip')
         self.skip_btn.setEnabled(False)
-        capture_btn_layout.addWidget(self.skip_btn, 1)
+        self.capture_btn_layout.addWidget(self.skip_btn, 1)
         self.skip_btn.setMaximumHeight(50)
 
         centre_layout.addWidget(self.image_widget)
@@ -128,7 +129,7 @@ class PICWindow(QWidget):
         self.image_filename_label.setSizePolicy(policy)
         #centre_layout.addWidget(self.image_filename_label)
 
-        centre_layout.addLayout(capture_btn_layout)
+        centre_layout.addLayout(self.capture_btn_layout)
 
         # Right pane / queue pane
         queue_box = QGroupBox('Queue')
@@ -168,6 +169,7 @@ class PICWindow(QWidget):
         self.capture_btn.setText('Capture {}'.format(filename))
 
     def capture_on_click(self):
+        self.capture_btn_layout.setEnabled(False)
         user_id = self.usr_id_input.text().lower().replace(' ', '_')
         experiment_id = self.exp_id_input.text().upper().replace(' ', '_')
         plant_id = self.plant_id_input.text().upper().replace(' ', '_')
@@ -177,9 +179,13 @@ class PICWindow(QWidget):
         dir = self.root / experiment_id.lower()
         dir.mkdir(exist_ok=True)
         self.capture(dir, filename, user_id, experiment_id, plant_id, image_id)
+        self.capture_btn_layout.setEnabled(True)
+        
 
     def preview_on_click(self):
-        self.capture(None, preview=True)
+        self.capture_btn_layout.setEnabled(False)
+        self.preview()
+        self.capture_btn_layout.setEnabled(True)
 
     def skip_on_click(self):
         pass
@@ -218,6 +224,7 @@ class PICWindow(QWidget):
 
         camera_file_jpg.save('/tmp/preview.jpg')
         self.image_widget.changePixmap('/tmp/preview.jpg')
+        QApplication.restoreOverrideCursor()
         return
 
     def capture(self, dir, filename, user_id, experiment_id, plant_id, image_id):
@@ -286,7 +293,7 @@ class PICWindow(QWidget):
         img_dict = pd.DataFrame(data=img_dict)
 
         try:
-            csv = pd.read_csv(str((dir / experiment_id).with_suffix('.csv')))
+            csv = pd.read_csv(str((dir / experiment_id).with_suffix('.csv')), dtype=str)
             csv = csv.append(img_dict, ignore_index=True, sort=False)
         except:
             csv = img_dict
@@ -297,9 +304,7 @@ class PICWindow(QWidget):
 
 
             
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = PICWindow()
-    window.show()
-    sys.exit(app.exec())
+app = QApplication(sys.argv)
+window = PICWindow()
+window.show()
+sys.exit(app.exec())
