@@ -281,6 +281,8 @@ class PICWindow(QWidget):
 
         camera_file_jpg.save('/tmp/preview.jpg')
         self.image_widget.changePixmap('/tmp/preview.jpg')
+        
+        self.proc_list.clearSelection()
 
         QApplication.restoreOverrideCursor()
         
