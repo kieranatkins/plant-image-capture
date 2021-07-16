@@ -366,12 +366,6 @@ class PICWindow(QWidget):
 
         QApplication.restoreOverrideCursor()
 
-    class FloatWindow(QLabel):
-        def __init__(self):
-            super().__init__()
-
-            self.setWindowFlags(Qt.FramelessWindowHint)
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
