@@ -7,7 +7,7 @@ The software runs in python, using the `gphoto2` for camera control, `PyQt5` for
 To install these packages run the command ```python -m pip install gphoto2 pandas pyqt5```.
 
 ## Running
-To run the software, run the command ```python plant-image-capture.py```.
+To run the software, run the command ```python plant_image_capture.py```.
 
 ## Known bugs
 * Do not use the '/' character in any of the filename fields as this will break the file save path.
