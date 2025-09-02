@@ -62,7 +62,8 @@ class PICWindow(QWidget):
                 self.pixmap = QPixmap(img)
                 self.repaint()
 
-        self.image_widget = ImageWidget(str(Path.home() / 'Documents/nppc.png'))
+        # self.image_widget = ImageWidget(str(Path.home() / 'Documents/nppc.png'))
+        self.image_widget = ImageWidget('./nppc.png')
         self.image_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         data_input_layout = QGridLayout()
