@@ -11,8 +11,7 @@ import gphoto2 as gp
 from pathlib import Path
 import pandas as pd
 
-ROOT_PATH = Path('Documents/pic/')
-ROOT_PATH = Path.home() / ROOT_PATH
+ROOT_PATH = Path.home() / 'Documents' / 'pic'
 
 
 class PICWindow(QWidget):
@@ -63,7 +62,7 @@ class PICWindow(QWidget):
                 self.repaint()
 
         # self.image_widget = ImageWidget(str(Path.home() / 'Documents/nppc.png'))
-        self.image_widget = ImageWidget('./nppc.png')
+        self.image_widget = ImageWidget('nppc.png')
         self.image_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         data_input_layout = QGridLayout()
@@ -333,8 +332,8 @@ class PICWindow(QWidget):
         camera_file_jpg = camera.file_get(images[0].folder, images[0].name, gp.GP_FILE_TYPE_NORMAL)
         # camera_file_nef = camera.file_get(images[1].folder, images[1].name, gp.GP_FILE_TYPE_NORMAL)
 
-        camera_file_jpg.save('/tmp/preview.jpg')
-        self.image_widget.changePixmap('/tmp/preview.jpg')
+        camera_file_jpg.save(str(ROOT_PATH / 'preview.jpg'))
+        self.image_widget.changePixmap(str(ROOT_PATH / 'preview.jpg'))
         QApplication.restoreOverrideCursor()
         return
 
