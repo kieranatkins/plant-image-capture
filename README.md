@@ -2,7 +2,7 @@
 Allows controlling standardised imaging equipment for plant image capture, inc. GUI.
 
 ## Requirements
-The software runs in python, using the `gphoto2` for camera control, `PyQt5` for the GUI, and `pandas` for experimental CSV input.
+The software runs in python, using the `gphoto2` library for camera control, `PyQt5` for the GUI, and `pandas` for experimental CSV input.
 
 To install these packages run the command ```python -m pip install gphoto2 pandas pyqt5```.
 
